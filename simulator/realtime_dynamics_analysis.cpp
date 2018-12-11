@@ -1149,7 +1149,7 @@ void realtime_dynamics_analysis::velocity_candidate(CTRL *ctrl, SIM *sim, double
 	double vd_mission = 15;			// 임무 속도: 광역 경로 계획에서 주어진 최대 주행 허용 속도 명령
 	DID->vd_mission = vd_mission;
 	double vd_max_allowable;		// 속도 후보군에서 허용 가능한 최대 값 (최대 임계 속도 > 임무 속도 : 임무속도, 임무속도 > 최대 임계 속도 : 최대 임계 속도)
-	double vd_min_allowable = 0.5;	// 속도 후보군에서 허용 가능한 최저 값	
+	double vd_min_allowable = 1.5;	// 속도 후보군에서 허용 가능한 최저 값	
 	double vd_max_accessable;		// 주어진 시간 동안 최대 가속 했을 때 도달하는 속도
 	double vd_min_accessable;		// 주어진 시간 동안 최대 감속 했을 때 도달하는 속도
 	double vd_max;					// 속도 후보군의 최대 값
@@ -2605,10 +2605,10 @@ void realtime_dynamics_analysis::LP_stability_metric(CHASSIS *chassis, SUS sus[6
 	double rate_epsilon = 0.01;			// RSM 및 PSM이 작동하기 위한 최소 angular rate margin
 
 	// RTT 속도를 줄이기 위한 주행 안정성 지표 별 성능 저하 파라미터 (1: 100% 성능, 0: 0% 성능 = 무조건 fail이므로 최저 속도)
-	double RSM_degrade = 1.0;
-	double PSM_degrade = 1.0;
-	double LSM_degrade = 1.0;
-	double VSM_degrade = 1.0;
+	double RSM_degrade = 0.3;
+	double PSM_degrade = 0.5;
+	double LSM_degrade = 0.3;
+	double VSM_degrade = 0.4;
 
 	if (RSM_degrade > 1.0) RSM_degrade = 1.0;
 	if (RSM_degrade < 0.0) RSM_degrade = 0.0;

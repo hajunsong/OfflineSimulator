@@ -47,24 +47,24 @@ void unmanned_ground_vehicle::init(GINPUT *GInput) {
 	/////////// Nan_interp //////
 	Obj_Nan_Global::fn_nan_interp(GInput->ElevationData, n_rows, n_cols);
 
-	FILE *path;
-	fopen_s(&path, "3d_path_10cm.csv", "w+");
-	for (int i = 0; i < GInput->WaypointSize; i++) {
-		double h;
-		Obj_Map_Global::PNU_fn_map(GInput->LocalPath[i][0], GInput->LocalPath[i][1], &h);
-		fprintf(path, "%10.10f,%10.10f,%10.10f\n", GInput->LocalPath[i][0], GInput->LocalPath[i][1], h);
-	}
-	fclose(path);
+	//FILE *path;
+	//fopen_s(&path, "3d_path_10cm.csv", "w+");
+	//for (int i = 0; i < GInput->WaypointSize; i++) {
+	//	double h;
+	//	Obj_Map_Global::PNU_fn_map(GInput->LocalPath[i][0], GInput->LocalPath[i][1], &h);
+	//	fprintf(path, "%10.10f,%10.10f,%10.10f\n", GInput->LocalPath[i][0], GInput->LocalPath[i][1], h);
+	//}
+	//fclose(path);
 
-	FILE *map;
-	fopen_s(&map, "map_10cm_anim.csv", "w+");
-	for (int i = 0; i < GInput->MapInfo_Row; i += 2) {
-		for (int j = 0; j < GInput->MapInfo_Col; j += 2) {
-			fprintf(map, "%3.5f,", GInput->ElevationData[i][j]);
-		}
-		fprintf(map, "\n");
-	}
-	fclose(map);
+	//FILE *map;
+	//fopen_s(&map, "map_10cm_anim.csv", "w+");
+	//for (int i = 0; i < GInput->MapInfo_Row; i += 2) {
+	//	for (int j = 0; j < GInput->MapInfo_Col; j += 2) {
+	//		fprintf(map, "%3.5f,", GInput->ElevationData[i][j]);
+	//	}
+	//	fprintf(map, "\n");
+	//}
+	//fclose(map);
 
 	/////////// Path //////////
 	WP_size = GInput->WaypointSize;	// 입력 받은 waypoint size를 RTT class 내부에서 사용하는 변수에 저장
@@ -167,7 +167,7 @@ void unmanned_ground_vehicle::run() {
 	memcpy(sim->Y, sim->Y_equil, sizeof(double) * 13);
 
  	// 각 스레드 별 차량의 desired velocity 와 그에 따른 wheel omega 초기값 계산
-	ctrl->v_d_init = 2;
+	ctrl->v_d_init = 0.5;
 	sim->Y[13] = ctrl->v_d_init;
 	sim->Y[25] = ctrl->v_d_init / tire->PNU_get_unloaded_radius();
 	sim->Y[26] = ctrl->v_d_init / tire->PNU_get_unloaded_radius();
@@ -182,7 +182,7 @@ void unmanned_ground_vehicle::run() {
 
 	int sim_indx = 1, flag = 0;
 	double run_time = 0;
-	int RTT_flag = 0;
+	int RTT_flag = 1;
 	if (RTT_flag) {
 		vel_command_flag = true;
 		RTT_run_flag = true;
@@ -204,14 +204,7 @@ void unmanned_ground_vehicle::run() {
 	fprintf_s(fp, "Roll,Pitch,Yaw,");
 	fprintf_s(fp, "Velocity,");
 	fprintf_s(fp, "WP_index,Vd_ctrl,Vx_ctrl,");
-	fprintf_s(fp, "RSM,PSM,LSM,VSM,");
-	fprintf_s(fp, "road_h_RF,road_h_RM,road_h_RR,road_h_LF,road_h_LM,road_h_LR,");
-	fprintf_s(fp, "RF_tire_x,RF_tire_y,RF_tier_z,");
-	fprintf_s(fp, "RM_tire_x,RM_tire_y,RM_tier_z,");
-	fprintf_s(fp, "RR_tire_x,RR_tire_y,RR_tier_z,");
-	fprintf_s(fp, "LF_tire_x,LF_tire_y,LF_tier_z,");
-	fprintf_s(fp, "LM_tire_x,LM_tire_y,LM_tier_z,");
-	fprintf_s(fp, "LR_tire_x,LR_tire_y,LR_tier_z\n");
+	fprintf_s(fp, "RSM,PSM,LSM,VSM\n");
 
 	while (1) {
 		if (RTT_flag == 1) {
@@ -268,14 +261,7 @@ void unmanned_ground_vehicle::run() {
 			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", chassis->roll_ang, chassis->pitch_ang, chassis->yaw_ang);
 			fprintf_s(fp, "%10.10f,", chassis->dr0cp[0]);
 			fprintf_s(fp, "%d,%10.10f,%10.10f,", ctrl->WP_indx, ctrl->v_di, ctrl->v_x);
-			fprintf_s(fp, "%2.7f,%2.7f,%2.7f,%2.7f,", ctrl->RSM, ctrl->PSM, ctrl->LSM, ctrl->VSM);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,%10.10f,%10.10f,%10.10f,", sus[RF].road_h, sus[RM].road_h, sus[RR].road_h, sus[LF].road_h, sus[LM].road_h, sus[LR].road_h);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", sus[RF].rw[0], sus[RF].rw[1], sus[RF].rw[2]);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", sus[RM].rw[0], sus[RM].rw[1], sus[RM].rw[2]);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", sus[RR].rw[0], sus[RR].rw[1], sus[RR].rw[2]);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", sus[LF].rw[0], sus[LF].rw[1], sus[LF].rw[2]);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f,", sus[LM].rw[0], sus[LM].rw[1], sus[LM].rw[2]);
-			fprintf_s(fp, "%10.10f,%10.10f,%10.10f\n", sus[LR].rw[0], sus[LR].rw[1], sus[LR].rw[2]);
+			fprintf_s(fp, "%2.7f,%2.7f,%2.7f,%2.7f\n", ctrl->RSM, ctrl->PSM, ctrl->LSM, ctrl->VSM);
 			
 			printf_s("v_d : %3.2f m/s   v_x : %3.2f m/s   Sim Time : %3.2f   LPE : %2.2f m   WayPoint : %d\n",ctrl->v_di, chassis->dr0cp[0], sim->t_current, ctrl->e_l, ctrl->WP_indx);
 
