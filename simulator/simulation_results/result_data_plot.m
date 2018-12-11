@@ -1,6 +1,6 @@
 clc; clear all; close all;
 
-data_indx = 1;
+data_indx = 0;
 [data, txt] = xlsread(sprintf('%d/SimulationResult.csv', data_indx));
 
 TimeIndex = 1;

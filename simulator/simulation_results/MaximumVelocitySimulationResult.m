@@ -164,7 +164,7 @@ for i = 1 : 20 : data_size
         axis([chassis_r0(1)-view_size chassis_r0(1)+view_size chassis_r0(2)-view_size chassis_r0(2)+view_size chassis_r0(3)-view_size/2 chassis_r0(3)+view_size/2]);
         sim_status = sprintf('Simulation time: %5.2f s,  Velocity: %2.2f m/s',i*0.01, data(i,29));
         title(sim_status,'FontSize',15)
-%         view(data(i,28)*180/pi+90, 45)
+        view(data(i,28)*180/pi, 75)
 
         %% global path & ugv trajectory
         subplot(4,4,[3,4,7,8])

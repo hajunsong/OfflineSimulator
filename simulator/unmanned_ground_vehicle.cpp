@@ -47,36 +47,25 @@ void unmanned_ground_vehicle::init(GINPUT *GInput) {
 	/////////// Nan_interp //////
 	Obj_Nan_Global::fn_nan_interp(GInput->ElevationData, n_rows, n_cols);
 
-// 	FILE *path;
-// 	if (GInput->flag == 1) {
-// 		fopen_s(&path, "3d_path_10cm.csv", "w+");
-// 		//fopen_s(&map, "map_10cm_anim.csv", "w+");
-// 	}
-// 	else if (GInput->flag == 2) {
-// 		fopen_s(&path, "3d_path_50cm.csv", "w+");
-// 		//fopen_s(&map, "map_50cm_anim.csv", "w+");
-// 	}
-// 	else if (GInput->flag == 3) {
-// 		fopen_s(&path, "3d_path_1m.csv", "w+");
-// 		//fopen_s(&map, "map_1m_anim.csv", "w+");
-// 	}
-// 	for (int i = 0; i < GInput->WaypointSize; i++) {
-// 		double h;
-// 		Obj_Map_Global::PNU_fn_map(GInput->LocalPath[i][0], GInput->LocalPath[i][1], &h);
-// 		fprintf(path, "%10.10f,%10.10f,%10.10f\n", GInput->LocalPath[i][0], GInput->LocalPath[i][1], h);
-// 	}
-// 	fclose(path);
-// 
-// 	FILE *map;
-// 	fopen_s(&map, "map_10cm_anim.csv", "w+");
-// 	for (int i = 0; i < GInput->MapInfo_Row; i+=2) {
-// 		for (int j = 0; j < GInput->MapInfo_Col; j+=2) {
-// 			fprintf(map, "%3.5f,", GInput->ElevationData[i][j]);
-// 		}
-// 		fprintf(map, "\n");
-// 	}
-// 	fclose(map);
-// 	
+	FILE *path;
+	fopen_s(&path, "3d_path_10cm.csv", "w+");
+	for (int i = 0; i < GInput->WaypointSize; i++) {
+		double h;
+		Obj_Map_Global::PNU_fn_map(GInput->LocalPath[i][0], GInput->LocalPath[i][1], &h);
+		fprintf(path, "%10.10f,%10.10f,%10.10f\n", GInput->LocalPath[i][0], GInput->LocalPath[i][1], h);
+	}
+	fclose(path);
+
+	FILE *map;
+	fopen_s(&map, "map_10cm_anim.csv", "w+");
+	for (int i = 0; i < GInput->MapInfo_Row; i += 2) {
+		for (int j = 0; j < GInput->MapInfo_Col; j += 2) {
+			fprintf(map, "%3.5f,", GInput->ElevationData[i][j]);
+		}
+		fprintf(map, "\n");
+	}
+	fclose(map);
+
 	/////////// Path //////////
 	WP_size = GInput->WaypointSize;	// 입력 받은 waypoint size를 RTT class 내부에서 사용하는 변수에 저장
 
@@ -193,7 +182,7 @@ void unmanned_ground_vehicle::run() {
 
 	int sim_indx = 1, flag = 0;
 	double run_time = 0;
-	int RTT_flag = 1;
+	int RTT_flag = 0;
 	if (RTT_flag) {
 		vel_command_flag = true;
 		RTT_run_flag = true;

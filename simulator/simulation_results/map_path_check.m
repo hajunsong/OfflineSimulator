@@ -1,7 +1,5 @@
 clc; clear all;
 
-east = load('../east.csv');
-north = load('../north.csv');
 map = load('../map_10cm_anim.csv');
 path = load('../3d_path_10cm.csv');
 
