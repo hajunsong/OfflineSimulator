@@ -66,15 +66,15 @@ unmanned_ground_vehicle *UGV = new unmanned_ground_vehicle;
 
 void UGV_run(GINPUT *GInput) {
 
-	int i = 0;
-	for (int i = 0; i < 30; i++) {
+	int i = -1;
+	//for (int i = 0; i < 30; i++) {
 		char dir[255];
 		sprintf_s(dir, sizeof(char) * 255, "simulation_results/%d", i + 1);
 		mkdir(dir);
 		UGV->sim_count = i + 1;
 		UGV->init(GInput);
 		UGV->run();
-	}
+	//}
 }
 
 int main() {

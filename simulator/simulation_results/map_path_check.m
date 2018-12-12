@@ -3,7 +3,7 @@ clc; clear all;
 map = load('../map_10cm_anim.csv');
 path = load('../3d_path_10cm.csv');
 
-wp = size(east,2);
+% wp = size(east,2);
 row = size(map,1);
 col = size(map,2);
 
@@ -18,13 +18,20 @@ set(gcf,'Color',[1,1,1])
 mesh(X,Y,map);
 hold on
 % plot(east*gap,north*gap,'r','LineWidth',2);
-plot3(path(:,1), path(:,2), path(:,3),'r','LineWidth',2)
-index = 1270;
-plot3(path(index,1), path(index,2), path(index,3),'ko','LineWidth',2,'MarkerSize',5,'MarkerFaceColor','k')
+plot3(path(:,1), path(:,2), path(:,3)+1,'r','LineWidth',5)
+% index = 1270;
+% plot3(path(index,1), path(index,2), path(index,3),'ko','LineWidth',2,'MarkerSize',5,'MarkerFaceColor','k')
 grid on
-range = 5;
-axis([path(index,1)-range,path(index,1)+range, path(index,2)-range,path(index,2)+range ,path(index,3)-7,path(index,3)+7])
+% range = 5;
+% axis([path(index,1)-range,path(index,1)+range, path(index,2)-range,path(index,2)+range ,path(index,3)-7,path(index,3)+7])
 xlabel('X')
 ylabel('Y')
 set(gca,'FontSize',13)
 % view(160,50)
+view(135+60,30+30)
+
+wp_size = size(path,1);
+dist = 0;
+for i = 1 : wp_size-1
+    dist = dist + sqrt((path(i,1)-path(i+1,1))^2+((path(i,2)-path(i+1,2)))^2);
+end
