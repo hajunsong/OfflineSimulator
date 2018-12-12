@@ -1,4 +1,4 @@
-clc; clear all; close all;
+clear all; close all;
 
 data_indx = 1;
 [data, txt] = xlsread(sprintf('%d/SimulationResult.csv', data_indx));
@@ -102,3 +102,6 @@ grid on
 ylabel('VSM')
 ylim([0,1])
 set(gca,'FontSize',13)
+
+disp(mean(data(:,Vx_ctrl_index))*3600/1000)
+

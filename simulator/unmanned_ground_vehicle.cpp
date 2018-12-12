@@ -2219,7 +2219,7 @@ output variables
 	double VF_side_max = 32450;		// 차량이 평지 위에 가만히 놓여 있을 때 좌측 또는 우측 세 개의 수직 타이어력 합
 	double VF_FM_max = 40888;		// 차량이 평지 위에 가만히 놓여 있을 때 전방과 중간 휠 네 개의 수직 타이어력 합
 	double VF_RM_max = 45538;		// 차량이 평지 위에 가만히 놓여 있을 때 후방과 중간 휠 네 개의 수직 타이어력 합
-	double lateral_position_max = 0.4 + 0.3*1.0;			// 최대 허용 가능한 횡 방향 위치 오차
+	double lateral_position_max = 0.4 + 0.3 + 0.2;			// 최대 허용 가능한 횡 방향 위치 오차
 	double a_z_max = 1.5 + 1.5*0.45;				// 최대 허용 수직 가속도. 단위: G
 	double RSM_max = 0.0;				// 롤 안정성 한계값
 	double PSM_max = 0.0;				// 피치 안정성 한계값

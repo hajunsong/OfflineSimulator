@@ -2605,10 +2605,10 @@ void realtime_dynamics_analysis::LP_stability_metric(CHASSIS *chassis, SUS sus[6
 	double rate_epsilon = 0.01;			// RSM 및 PSM이 작동하기 위한 최소 angular rate margin
 
 	// RTT 속도를 줄이기 위한 주행 안정성 지표 별 성능 저하 파라미터 (1: 100% 성능, 0: 0% 성능 = 무조건 fail이므로 최저 속도)
-	double RSM_degrade = 0.3;
-	double PSM_degrade = 0.5;
-	double LSM_degrade = 0.3;
-	double VSM_degrade = 0.4;
+	double RSM_degrade = 0.35;
+	double PSM_degrade = 0.35;
+	double LSM_degrade = 0.2;
+	double VSM_degrade = 0.5;
 
 	if (RSM_degrade > 1.0) RSM_degrade = 1.0;
 	if (RSM_degrade < 0.0) RSM_degrade = 0.0;

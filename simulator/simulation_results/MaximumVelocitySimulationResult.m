@@ -1,6 +1,6 @@
 clc; clear all; close all;
 
-simulation_indx = 0;
+simulation_indx = 1;
 addpath(sprintf('%d',simulation_indx));
 
 map = load('../map_10cm_anim.csv'); % 애니메이션을 위해 1m 간격으로 별도로 저장한 맵 데이터
@@ -164,7 +164,7 @@ for i = 1 : 20 : data_size
         axis([chassis_r0(1)-view_size chassis_r0(1)+view_size chassis_r0(2)-view_size chassis_r0(2)+view_size chassis_r0(3)-view_size/2 chassis_r0(3)+view_size/2]);
         sim_status = sprintf('Simulation time: %5.2f s,  Velocity: %2.2f m/s',i*0.01, data(i,29));
         title(sim_status,'FontSize',15)
-        view(data(i,28)*180/pi, 75)
+        view(data(i,28)*180/pi+125, 30)
 
         %% global path & ugv trajectory
         subplot(4,4,[3,4,7,8])
@@ -178,40 +178,40 @@ for i = 1 : 20 : data_size
         hold off
 
         %% RTT analysis results
-    %     if rtt_data(indx+1,4) <= data(i,1)
-    %         indx = indx + 1;
-    %     end
-    %     subplot(4,4,[9,10])
-    %     velocity = rtt_data(indx,6:6+wp_size-1);
-    %     plot(wp',velocity','k','LineWidth',3)
-    %     grid on
-    %     ylabel('Velocity Profile [m/s]','FontSize',15)
-    %     xlim([wp(1), wp(end)])
-    %     set(gca,'XtickLabel','{}')
+        if rtt_data(indx+1,4) <= data(i,1)
+            indx = indx + 1;
+        end
+        subplot(4,4,[9,10])
+        velocity = rtt_data(indx,6:6+wp_size-1);
+        plot(wp',velocity','k','LineWidth',3)
+        grid on
+        ylabel('Velocity Profile [m/s]','FontSize',15)
+        xlim([wp(1), wp(end)])
+        set(gca,'XtickLabel','{}')
 
-    %     subplot(4,4,[13,14])
-    %     for j = 1 : num_threads
-    %         thread(j).RSM = rtt_data(indx,46+j-1:28:1138+j-1);
-    %         thread(j).PSM = rtt_data(indx,46+j-1+num_threads:28:1138+j-1+num_threads);
-    %         thread(j).LSM = rtt_data(indx,46+j-1+num_threads*2:28:1138+j-1+num_threads*2);
-    %         thread(j).VSM = rtt_data(indx,46+j-1+num_threads*3:28:1138+j-1+num_threads*3);
-    % 
-    %         plot(wp, thread(j).RSM,'ko','MarkerSize',5)
-    %         hold on
-    %         plot(wp, thread(j).PSM,'bo','MarkerSize',5)
-    %         plot(wp, thread(j).LSM,'go','MarkerSize',5)
-    %         plot(wp, thread(j).VSM,'mo','MarkerSize',5)
-    %         plot([wp(1),wp(end)],[RSM_max, RSM_max],'k--','LineWidth',1.5)
-    %         plot([wp(1),wp(end)],[PSM_max, PSM_max],'b--','LineWidth',1.5)
-    %         plot([wp(1),wp(end)],[LSM_max, LSM_max],'g--','LineWidth',1.5)
-    %         plot([wp(1),wp(end)],[VSM_max, VSM_max],'m--','LineWidth',1.5)
-    %         grid on
-    %         ylim([-1.5 1.5])
-    %         xlim([wp(1), wp(end)])
-    %         ylabel('Stability','FontSize',15)
-    %         legend('RSM','PSM','LSM','VSM','RSM limit','PSM limit','LSM limit','VSM limit','Location','east')
-    %     end
-    %     hold off
+        subplot(4,4,[13,14])
+        for j = 1 : num_threads
+            thread(j).RSM = rtt_data(indx,46+j-1:28:1138+j-1);
+            thread(j).PSM = rtt_data(indx,46+j-1+num_threads:28:1138+j-1+num_threads);
+            thread(j).LSM = rtt_data(indx,46+j-1+num_threads*2:28:1138+j-1+num_threads*2);
+            thread(j).VSM = rtt_data(indx,46+j-1+num_threads*3:28:1138+j-1+num_threads*3);
+    
+            plot(wp, thread(j).RSM,'ko','MarkerSize',5)
+            hold on
+            plot(wp, thread(j).PSM,'bo','MarkerSize',5)
+            plot(wp, thread(j).LSM,'go','MarkerSize',5)
+            plot(wp, thread(j).VSM,'mo','MarkerSize',5)
+            plot([wp(1),wp(end)],[RSM_max, RSM_max],'k--','LineWidth',1.5)
+            plot([wp(1),wp(end)],[PSM_max, PSM_max],'b--','LineWidth',1.5)
+            plot([wp(1),wp(end)],[LSM_max, LSM_max],'g--','LineWidth',1.5)
+            plot([wp(1),wp(end)],[VSM_max, VSM_max],'m--','LineWidth',1.5)
+            grid on
+            ylim([-1.5 1.5])
+            xlim([wp(1), wp(end)])
+            ylabel('Stability','FontSize',15)
+            legend('RSM','PSM','LSM','VSM','RSM limit','PSM limit','LSM limit','VSM limit','Location','east')
+        end
+        hold off
 
         %% velocity command & response
         subplot(4,4,[11,12,15,16])
