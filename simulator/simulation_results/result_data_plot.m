@@ -104,4 +104,3 @@ ylim([0,1])
 set(gca,'FontSize',13)
 
 disp(mean(data(:,Vx_ctrl_index))*3600/1000)
-

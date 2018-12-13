@@ -2596,19 +2596,19 @@ void realtime_dynamics_analysis::LP_stability_metric(CHASSIS *chassis, SUS sus[6
 	double VF_side_max = 32450;		// 차량이 평지 위에 가만히 놓여 있을 때 좌측 또는 우측 세 개의 수직 타이어력 합
 	double VF_FM_max = 40888;		// 차량이 평지 위에 가만히 놓여 있을 때 전방과 중간 휠 네 개의 수직 타이어력 합
 	double VF_RM_max = 45538;		// 차량이 평지 위에 가만히 놓여 있을 때 후방과 중간 휠 네 개의 수직 타이어력 합
-	double lateral_position_max = 0.4 + 0.3*1.0;			// 최대 허용 가능한 횡 방향 위치 오차
-	double a_z_max = 1.5 + 1.5*0.45;				// 최대 허용 수직 가속도. 단위: G
-	double RSM_max = 0.0;				// 롤 안정성 한계값
-	double PSM_max = 0.0;				// 피치 안정성 한계값
-	double LSM_max = 0.0;//0.25;				// 횡 방향 안정성 한계값
-	double VSM_max = 0.0;//0.53;				// 수직 가속도 안정성 한계값 0.53    0.5: 35.39 kph ,  0.56: 31.26 kph
+	double lateral_position_max = 0.3 + 0.3*0;			// 최대 허용 가능한 횡 방향 위치 오차
+	double a_z_max = 1.5;				// 최대 허용 수직 가속도. 단위: G
+	double RSM_max = 0.65;				// 롤 안정성 한계값
+	double PSM_max = 0.65;				// 피치 안정성 한계값
+	double LSM_max = 0.9;//0.25;				// 횡 방향 안정성 한계값
+	double VSM_max = 0.5;//0.53;				// 수직 가속도 안정성 한계값 0.53    0.5: 35.39 kph ,  0.56: 31.26 kph
 	double rate_epsilon = 0.01;			// RSM 및 PSM이 작동하기 위한 최소 angular rate margin
 
 	// RTT 속도를 줄이기 위한 주행 안정성 지표 별 성능 저하 파라미터 (1: 100% 성능, 0: 0% 성능 = 무조건 fail이므로 최저 속도)
-	double RSM_degrade = 0.35;
-	double PSM_degrade = 0.35;
-	double LSM_degrade = 0.2;
-	double VSM_degrade = 0.5;
+	double RSM_degrade = 1.0;
+	double PSM_degrade = 1.0;
+	double LSM_degrade = 1.0;
+	double VSM_degrade = 1.0;
 
 	if (RSM_degrade > 1.0) RSM_degrade = 1.0;
 	if (RSM_degrade < 0.0) RSM_degrade = 0.0;
